@@ -7,73 +7,42 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    InputSystem input = null;
-    Vector2 movementInput = Vector2.zero;
+    Vector2 movementInput;
+    public float speed = 10;
     Rigidbody2D rb;
-    [SerializeField] float speed = 5;
+    InputSystem inputSystem;
 
     private void Awake()
     {
-        input = new InputSystem();
+        inputSystem = new InputSystem();
+    }
+    private void Start()
+    {
         rb = GetComponent<Rigidbody2D>();
+    }
+    private void FixedUpdate()
+    {
+        rb.velocity = movementInput * speed;
     }
 
     private void OnEnable()
     {
-        input.Enable();
-        input.PlayerInput.Movement.performed += OnMovementPerformed;
-        input.PlayerInput.Movement.canceled += OnMovementCancelled;
+        inputSystem.Enable();
+        inputSystem.PlayerInput.Movement.performed += MovementPerformed;
     }
     private void OnDisable()
     {
-        input.Disable();
-        input.PlayerInput.Movement.performed -= OnMovementPerformed;
-        input.PlayerInput.Movement.canceled -= OnMovementCancelled;
+        inputSystem.Disable();
+        inputSystem.PlayerInput.Movement.canceled -= MovemontCanceled;
     }
-    private void FixedUpdate()
-    {
-        rb.velocity = movementInput * speed; // her cihaz icin fixlemek icin magnitude normalized Time.fixedDeltaTime bak ????
-    }
-    private void OnMovementPerformed(InputAction.CallbackContext context)
-    {
-        movementInput = context.ReadValue<Vector2>();
-    }
-    private void OnMovementCancelled(InputAction.CallbackContext context)
+
+    private void MovemontCanceled(InputAction.CallbackContext context)
     {
         movementInput = Vector2.zero;
     }
-    //public InputActionReference movement, attack;
-    //Vector2 movementInput;
-    //public float speed = 5;
 
-    //Rigidbody2D rb;
-    //void Start()
-    //{
-    //    rb = GetComponent<Rigidbody2D>();
-    //}
-
-    //private void FixedUpdate()
-    //{
-    //    Movement();
-    //}
-
-    //public void Movement()
-    //{
-    //    movementInput = movement.action.ReadValue<Vector2>();
-    //    rb.velocity = /*new Vector2(movementInput.x * speed, movementInput.y * speed);*/ movementInput.normalized * speed * Time.fixedDeltaTime;
-    //}
-
-    //private void OnEnable() // default unity fonksiyonu script aktif oldugunda direkt olarak calisir 
-    //{
-    //    attack.action.performed += PerformedAttack;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    attack.action.performed -= PerformedAttack;
-    //}
-    //private void PerformedAttack(InputAction.CallbackContext context)
-    //{
-    //    // attack icin gerekli kodlar
-    //}
+    public void MovementPerformed(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
+    }
 }
