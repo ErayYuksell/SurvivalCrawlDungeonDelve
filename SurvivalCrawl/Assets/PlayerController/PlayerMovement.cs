@@ -8,9 +8,15 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     Vector2 movementInput;
-    public float speed = 10;
+    [Header("Movemont")]
+    [SerializeField] float speed = 10;
     Rigidbody2D rb;
     InputSystem inputSystem;
+   
+    [Header("Animation")]
+    [SerializeField] AnimationClip Runclip;
+    Animator animator;
+
 
     private void Awake()
     {
@@ -19,10 +25,16 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
     }
     private void FixedUpdate()
     {
         rb.velocity = movementInput * speed;
+        if (movementInput == Vector2.zero)
+        {
+            return;
+        }
+        animator.Play(Runclip.name);
     }
 
     private void OnEnable()
