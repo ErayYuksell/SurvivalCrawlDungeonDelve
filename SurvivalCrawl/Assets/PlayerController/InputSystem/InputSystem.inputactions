@@ -15,18 +15,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "PointerPosition",
-                    "type": "Value",
-                    "id": "467bb782-17e3-4f13-8d50-f2bd665a5799",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Attack",
                     "type": "Button",
                     "id": "ba5f658b-8855-4729-a033-ddd3ed7f3ec3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AdvancedAttack",
+                    "type": "Button",
+                    "id": "3c31da5b-e09b-4155-8939-83c4cb438c15",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -36,18 +36,18 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "fd1720ac-7151-4319-b4bf-c8dee079c6e9",
-                    "path": "<Mouse>/position",
+                    "id": "7f3b43a7-8df7-4a87-8e25-02bc6d853654",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PointerPosition",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "f63eaa30-f90c-4ff7-b733-c9f59c32abd1",
+                    "id": "0e2f5df6-867b-489d-9fe6-d260601fa428",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
@@ -119,6 +119,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0fd07e41-a9f3-4c8c-b8e1-cff4d57d14f3",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AdvancedAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

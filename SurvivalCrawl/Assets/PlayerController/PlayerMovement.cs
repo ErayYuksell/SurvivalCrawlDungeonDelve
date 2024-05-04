@@ -12,9 +12,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float speed = 10;
     Rigidbody2D rb;
     InputSystem inputSystem;
-   
+
     [Header("Animation")]
     [SerializeField] AnimationClip Runclip;
+    [SerializeField] AnimationClip AttackClip;
     Animator animator;
 
 
@@ -30,6 +31,9 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = movementInput * speed;
+
+        PlayerFlip();
+
         if (movementInput == Vector2.zero)
         {
             return;
@@ -41,14 +45,18 @@ public class PlayerMovement : MonoBehaviour
     {
         inputSystem.Enable();
         inputSystem.PlayerInput.Movement.performed += MovementPerformed;
+        inputSystem.PlayerInput.Attack.performed += AttackState;
+        inputSystem.PlayerInput.AdvancedAttack.performed += AdvanceAttackState;
     }
+
     private void OnDisable()
     {
         inputSystem.Disable();
         inputSystem.PlayerInput.Movement.canceled -= MovemontCanceled;
+        inputSystem.PlayerInput.Attack.canceled -= AttackState;
+        inputSystem.PlayerInput.AdvancedAttack.performed -= AdvanceAttackState;
     }
-
-    private void MovemontCanceled(InputAction.CallbackContext context)
+    private void MovemontCanceled(InputAction.CallbackContext context) // value degeri donduruyorsam ayri fonksiyonlar kullanmayi tercih ettim
     {
         movementInput = Vector2.zero;
     }
@@ -56,5 +64,32 @@ public class PlayerMovement : MonoBehaviour
     public void MovementPerformed(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
+    }
+
+    public void AttackState(InputAction.CallbackContext context) // button degeri dondurdugu icin tek fonksiyonda hallettim
+    {
+        if (context.performed)
+        {
+            animator.Play(AttackClip.name);
+            Debug.Log("AttackPerformed");
+        }
+        if (context.canceled)
+        {
+            animator.StopPlayback();
+            Debug.Log("AttackCanceled");
+        }
+    }
+    private void AdvanceAttackState(InputAction.CallbackContext context)
+    {
+        Debug.Log("AdvanceAttack");
+    }
+    public void PlayerFlip()
+    {
+        bool playerSpeed = Mathf.Abs(rb.velocity.x) > Mathf.Epsilon; // epsilon 0 a en yakin deger iste
+
+        if (playerSpeed)
+        {
+            transform.localScale = new Vector2(Mathf.Sign(rb.velocity.x), 1); // sign icindeki deger 0 veya pozitif ise 1 dondurur negatif ise -1
+        }
     }
 }
